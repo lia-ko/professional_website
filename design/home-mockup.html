@@ -1,0 +1,317 @@
+<title>L.T. Riso Zine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500;1,9..144,600&family=Hanken+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+<style>
+/* =====================================================================
+   L.T. — a risograph zine. Two editions: Day (paper) & Night (black stock).
+   ===================================================================== */
+:root{
+  --display:"Archivo Black",system-ui,sans-serif;
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Hanken Grotesk",system-ui,sans-serif;
+  --mono:"Space Mono",ui-monospace,monospace;
+
+  /* DAY EDITION — warm manila stock, two spot inks */
+  --paper:#F1E7D2; --ink:#18141C; --mut:#5B5560;
+  --pink:#FF3D8B; --blue:#1B2AD8; --yellow:#FFC22E;
+  --frame:#18141C;            /* photo frame border */
+  --offset:var(--blue);       /* screenprint offset colour */
+  --blend:multiply;
+  --grain-op:.07;
+}
+body.night{
+  /* NIGHT EDITION — black photocopy stock, neon inks that glow */
+  --paper:#100E15; --ink:#F2EBDC; --mut:#9A93A6;
+  --pink:#FF4FA3; --blue:#5470FF; --yellow:#FFE45E;
+  --frame:#F2EBDC;
+  --offset:var(--pink);
+  --blend:screen;
+  --grain-op:.10;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:var(--sans); line-height:1.5; -webkit-font-smoothing:antialiased;
+  transition:background .5s ease, color .5s ease;
+}
+/* paper grain over everything */
+.grain{position:fixed; inset:0; z-index:300; pointer-events:none; opacity:var(--grain-op); mix-blend-mode:var(--blend);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+.wrap{max-width:1120px; margin:0 auto; padding:0 30px}
+a{color:inherit}
+
+/* ---------- masthead ---------- */
+.mast{position:sticky; top:0; z-index:100; background:var(--paper); border-bottom:3px solid var(--ink); transition:background .5s}
+.mast .wrap{display:flex; align-items:center; justify-content:space-between; height:62px}
+.mast .lt{font-family:var(--display); font-size:26px; letter-spacing:-.02em; text-shadow:2px 2px 0 var(--offset)}
+.mast nav{display:flex; align-items:center; gap:22px; font-family:var(--mono); font-size:12px; letter-spacing:.06em; text-transform:uppercase}
+.mast nav a{text-decoration:none; color:var(--ink); opacity:.75}
+.mast nav a:hover{opacity:1; color:var(--pink)}
+.mast nav a.tuck{opacity:.4}
+
+/* edition switch — a rubber stamp toggle */
+.edsw{display:inline-flex; align-items:center; gap:9px; cursor:pointer; background:none; border:2px solid var(--ink); border-radius:2px; padding:5px 8px; font:inherit; color:var(--ink)}
+.edsw:hover{border-color:var(--pink)}
+.edsw .t{font-family:var(--mono); font-size:10px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--mut)}
+body:not(.night) .edsw .day, body.night .edsw .nite{color:var(--pink)}
+.edsw .track{position:relative; width:34px; height:16px; background:var(--ink); border-radius:2px}
+.edsw .knob{position:absolute; top:2px; left:2px; width:12px; height:12px; background:var(--yellow); transition:transform .35s cubic-bezier(.7,-0.3,.3,1.3)}
+body.night .edsw .knob{transform:translateX(18px); background:var(--pink)}
+.focusable:focus-visible{outline:2px solid var(--pink); outline-offset:3px}
+.reading-flag{font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--mut)}
+
+/* hero flip — the primary navigation */
+.edition-cta{margin:34px 0 0}
+.edition-cta .cta-sub{font-family:var(--mono); font-size:12.5px; letter-spacing:.02em; color:var(--mut); margin:0 0 12px; text-transform:uppercase}
+.edition-cta .cta-sub b{color:var(--ink)}
+.flip-big{display:inline-block; font-family:var(--display); font-size:clamp(15px,2vw,19px); text-transform:uppercase; letter-spacing:-.01em; color:var(--paper); background:var(--ink); border:3px solid var(--ink); padding:15px 22px; box-shadow:7px 7px 0 var(--pink); cursor:pointer; transition:transform .12s, box-shadow .12s}
+.flip-big:hover{transform:translate(-2px,-2px); box-shadow:9px 9px 0 var(--pink)}
+.flip-big:active{transform:translate(2px,2px); box-shadow:3px 3px 0 var(--pink)}
+.hero-mast{display:flex; align-items:baseline; gap:16px; margin:0 0 34px}
+.hero-mast .lt{font-family:var(--display); font-size:26px; letter-spacing:-.02em; text-shadow:2px 2px 0 var(--offset)}
+.flip-float{position:fixed; right:20px; bottom:20px; z-index:150; background:var(--paper); box-shadow:5px 5px 0 var(--ink); opacity:0; transform:translateY(14px) scale(.96); pointer-events:none; transition:opacity .3s ease, transform .3s ease}
+.flip-float.show{opacity:1; transform:none; pointer-events:auto}
+
+/* ---------- hero ---------- */
+.hero{position:relative; overflow:hidden; border-bottom:3px solid var(--ink)}
+.hero .wrap{position:relative; z-index:2; padding:64px 30px 56px}
+.hero .blob{position:absolute; z-index:1; mix-blend-mode:var(--blend); border-radius:50%; filter:saturate(1.1)}
+.hero .b1{width:360px; height:360px; background:var(--pink); right:-70px; top:-90px}
+.hero .b2{width:250px; height:250px; background:var(--blue); right:200px; top:60px}
+.hero .halftone{position:absolute; z-index:1; left:-40px; bottom:-50px; width:280px; height:280px; color:var(--blue); mix-blend-mode:var(--blend);
+  background-image:radial-gradient(currentColor 2px, transparent 2.4px); background-size:11px 11px; -webkit-mask-image:radial-gradient(circle,#000 55%,transparent 70%); mask-image:radial-gradient(circle,#000 55%,transparent 70%)}
+.kick{font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--ink); margin:0 0 22px}
+.kick b{color:var(--pink)}
+.huge{font-family:var(--display); font-size:clamp(48px,10vw,116px); line-height:.86; letter-spacing:-.03em; text-transform:uppercase; margin:0; text-shadow:4px 4px 0 var(--offset)}
+.huge .pink{color:var(--pink); text-shadow:4px 4px 0 var(--ink)}
+.huge.day-title{font-size:clamp(38px,7vw,82px); line-height:.92; max-width:14ch}
+.lede{font-family:var(--serif); font-style:italic; font-size:clamp(18px,2.4vw,23px); max-width:26ch; margin:26px 0 0; color:var(--ink)}
+[data-ed]{transition:opacity .4s ease}
+[data-ed][hidden]{display:none}
+
+/* ---------- section scaffolding ---------- */
+.section{padding:56px 0; border-bottom:3px solid var(--ink)}
+.stamp{display:inline-block; font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--paper); background:var(--ink); padding:6px 12px; transform:rotate(-1.4deg); margin:0 0 30px}
+
+/* DAY: skill columns */
+.cols{display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:3px solid var(--ink)}
+.col{padding:24px 22px; border-right:3px solid var(--ink)}
+.col:last-child{border-right:none}
+.col .no{font-family:var(--mono); font-size:12px; font-weight:700; color:var(--pink)}
+.col h3{font-family:var(--display); font-size:24px; text-transform:uppercase; letter-spacing:-.01em; margin:6px 0 10px; line-height:1}
+.col p{font-size:14.5px; color:var(--mut); margin:0}
+.field{display:flex; flex-wrap:wrap; gap:9px; margin:26px 0 0}
+.field span{font-family:var(--mono); font-size:12.5px; border:2px solid var(--ink); padding:5px 10px; background:var(--paper)}
+.field span:nth-child(3n){box-shadow:3px 3px 0 var(--pink)}
+.field span:nth-child(3n+1){box-shadow:3px 3px 0 var(--blue)}
+.field.learn span{border-style:dashed; box-shadow:none; border-color:var(--pink)}
+
+/* DAY: the brick wall */
+.bricks{display:grid; grid-template-columns:repeat(6,1fr); gap:16px}
+.brick{grid-column:span 3; border:3px solid var(--ink); background:var(--paper); padding:24px 24px 26px; box-shadow:9px 9px 0 var(--blue); position:relative}
+.brick:nth-child(2n){box-shadow:9px 9px 0 var(--pink)}
+.brick.b-found{grid-column:span 6}
+.brick.b-third{grid-column:span 2}
+.brick.b-twothird{grid-column:span 4}
+.brick .lab{font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--pink)}
+.brick h3{font-family:var(--display); font-size:23px; text-transform:uppercase; letter-spacing:-.01em; line-height:1; margin:8px 0 12px}
+.brick.b-found h3{font-size:30px}
+.brick p{font-size:15px; color:var(--ink); margin:0; max-width:62ch}
+.brick .mut{color:var(--mut)}
+.brick ul{list-style:none; padding:0; margin:0; columns:2; column-gap:26px}
+.brick li{font-size:14.5px; padding:5px 0 5px 20px; position:relative; break-inside:avoid}
+.brick li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:9px; background:var(--pink)}
+.brick li:nth-child(2n)::before{background:var(--blue)}
+.principles{display:flex; flex-wrap:wrap; gap:9px; margin:16px 0 0}
+.principles span{font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.04em; border:2px solid var(--ink); padding:4px 10px; background:var(--ink); color:var(--paper)}
+
+/* NIGHT: project feature spreads */
+.feature{display:grid; grid-template-columns:1fr 1fr; gap:36px; align-items:center; padding:44px 0; border-bottom:2px dashed var(--mut)}
+.feature:last-child{border-bottom:none}
+.feature.flip .art-wrap{order:2}
+.art-wrap{position:relative}
+.pframe{border:5px solid var(--frame); box-shadow:14px 14px 0 var(--offset); position:relative}
+.pshot{aspect-ratio:16/10}
+.tape{position:absolute; top:-14px; left:24px; width:78px; height:26px; background:var(--yellow); opacity:.85; transform:rotate(-5deg); mix-blend-mode:var(--blend)}
+.fbody .flabel{font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--pink)}
+.fbody h3{font-family:var(--display); font-size:clamp(34px,5vw,52px); text-transform:uppercase; letter-spacing:-.02em; line-height:.9; margin:8px 0 6px; text-shadow:3px 3px 0 var(--offset)}
+.fbody .byline{font-family:var(--mono); font-size:12px; color:var(--mut); margin:0 0 14px}
+.fbody p{font-size:15.5px; color:var(--ink); max-width:44ch; margin:0 0 18px}
+.fbody .read{font-family:var(--mono); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; border-bottom:3px solid var(--pink); padding-bottom:2px; text-decoration:none}
+
+/* project gradient stand-ins */
+.g-wander{background:linear-gradient(120deg,#2FB6A8,#1F6F7A 72%)}
+.g-tess{background:conic-gradient(from 210deg at 42% 40%,#E8A13A,#D6467F,#7C5CFF,#2FB6A8,#E8A13A)}
+.g-veles{background:linear-gradient(120deg,#7C5CFF,#2c2058 78%)}
+.g-wod{background:linear-gradient(120deg,#D6467F,#38101f 80%)}
+
+/* ---------- colophon ---------- */
+.colophon{padding:44px 0 70px}
+.colophon .wrap{display:flex; justify-content:space-between; align-items:flex-end; gap:26px; flex-wrap:wrap}
+.colophon .big{font-family:var(--display); font-size:clamp(30px,5vw,52px); text-transform:uppercase; line-height:.9; letter-spacing:-.02em; text-shadow:3px 3px 0 var(--offset); margin:0}
+.colophon .links{display:flex; gap:16px; font-family:var(--mono); font-size:13px; text-transform:uppercase; letter-spacing:.06em}
+.colophon .links a{text-decoration:none; border-bottom:3px solid var(--pink); padding-bottom:2px}
+.colophon .fine{font-family:var(--mono); font-size:11px; color:var(--mut); margin:14px 0 0; max-width:44ch}
+.ph{font-family:var(--mono); font-size:10px; color:var(--mut); opacity:.7}
+
+@media (max-width:820px){
+  .bricks{grid-template-columns:1fr}
+  .brick,.brick.b-found,.brick.b-third,.brick.b-twothird{grid-column:span 1}
+  .brick ul{columns:1}
+  .feature{grid-template-columns:1fr; gap:22px}
+  .feature.flip .art-wrap{order:0}
+  .mast nav .nl{display:none}
+}
+</style>
+<div class="grain"></div>
+
+<!-- floating flip — fades in after the hero scrolls away -->
+<button class="edsw flip-float focusable" id="ed" aria-pressed="false" aria-label="Switch between Day and Night edition">
+  <span class="t day">Day</span>
+  <span class="track"><span class="knob"></span></span>
+  <span class="t nite">Night</span>
+</button>
+
+<!-- ================= HERO ================= -->
+<section class="hero">
+  <span class="blob b1"></span><span class="blob b2"></span><span class="halftone"></span>
+  <div class="wrap">
+    <div class="hero-mast">
+      <span class="lt">L.T.</span>
+      <span class="reading-flag" data-ed="day">Day Edition</span>
+      <span class="reading-flag" data-ed="night" hidden>Night Edition</span>
+    </div>
+    <p class="kick" data-ed="day"><b>L.T.</b> — Software &amp; Data Engineer · Day Edition</p>
+    <p class="kick" data-ed="night" hidden><b>L.T.</b> — Games · Tools · Worlds · Night Edition</p>
+
+    <h1 class="huge day-title" data-ed="day">Let's build things<br><span class="pink">brick by brick.</span></h1>
+    <h1 class="huge" data-ed="night" hidden>Make<br><span class="pink">weird</span><br>things.</h1>
+
+    <p class="lede" data-ed="day">I build software the way you'd build to last — good foundations, honest joints, and room to grow.</p>
+    <p class="lede" data-ed="night" hidden>After hours the deadlines are mine — games, worldbuilding tools, and tabletop systems.</p>
+
+    <div class="edition-cta">
+      <p class="cta-sub">Two sides to this — <b>Day</b> is the engineer · <b>Night</b> is the maker.</p>
+      <button class="flip-big focusable" id="flip">
+        <span data-ed="day">Flip to the Night Edition →</span>
+        <span data-ed="night" hidden>← Flip back to the Day Edition</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= DAY EDITION: skills ================= -->
+<section class="section" data-ed="day">
+  <div class="wrap">
+    <span class="stamp">The blueprint — Day Edition</span>
+    <div class="bricks">
+
+      <article class="brick b-found">
+        <span class="lab">01 · Foundations</span>
+        <h3>How I build</h3>
+        <p>I'm a little obsessed with the craft of it. Good software is <b>maintainable</b> software — designed for the change that's coming, not just the ticket in front of me. I lean on SOLID and DRY, clear separation of concerns, and code that's tested and documented so the next person (usually future me) isn't left digging. I build systems meant to be <b>extended and to evolve</b>, not torn down and rebuilt a year later.</p>
+        <div class="principles"><span>SOLID</span><span>DRY</span><span>TDD</span><span>Separation of concerns</span><span>Documentation-first</span></div>
+      </article>
+
+      <article class="brick b-half">
+        <span class="lab">02 · The Craft</span>
+        <h3>Skills I have</h3>
+        <ul>
+          <li>Designing data platforms &amp; pipelines</li>
+          <li>Event-driven backends &amp; APIs</li>
+          <li>System modernization &amp; migration</li>
+          <li>Observability &amp; incident response</li>
+          <li>Data modeling &amp; integration</li>
+          <li>Mentoring &amp; code review</li>
+        </ul>
+      </article>
+
+      <article class="brick b-half">
+        <span class="lab">03 · The Toolbox</span>
+        <h3>Tech I reach for</h3>
+        <div class="field">
+          <span>Python</span><span>C#</span><span>SQL</span><span>Go</span><span>Java</span><span>FastAPI</span><span>Flask</span><span>Kafka</span><span>Spark</span><span>Airflow</span><span>Trino</span><span>Docker</span><span>Prometheus</span><span>Grafana</span>
+        </div>
+      </article>
+
+      <article class="brick b-third">
+        <span class="lab">04 · On the bench</span>
+        <h3>Learning</h3>
+        <p class="mut">Always something new on the workbench.</p>
+        <div class="field learn">
+          <span>C++</span><span>Svelte</span><span>TypeScript</span><span>Godot</span>
+        </div>
+      </article>
+
+      <article class="brick b-twothird">
+        <span class="lab">05 · The Ground</span>
+        <h3>Platforms I know</h3>
+        <div class="field">
+          <span>Databricks</span><span>OpenShift</span><span>Azure</span><span>Google Cloud</span><span>AWS · S3</span><span>Elasticsearch</span><span>Kubernetes</span>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= NIGHT EDITION: projects ================= -->
+<section class="section" data-ed="night" hidden>
+  <div class="wrap">
+    <span class="stamp">Things I made — Night Edition</span>
+
+    <article class="feature">
+      <div class="art-wrap"><span class="tape"></span><div class="pframe"><div class="pshot g-tess"></div></div></div>
+      <div class="fbody"><p class="flabel">Feature — a game made of light</p><h3>Tessellate</h3><p class="byline">Meditative game · Godot 4 · C# · iOS &amp; Android</p><p>Build a stained-glass window one irregular piece at a time. No score, no timer, no right answer — just glass, light, and the quiet of making something only you would make.</p><a class="read" href="#">Read the build →</a></div>
+    </article>
+
+    <article class="feature flip">
+      <div class="art-wrap"><div class="pframe"><div class="pshot g-wander"></div></div></div>
+      <div class="fbody"><p class="flabel">Feature — the whole trip, one canvas</p><h3>Wander</h3><p class="byline">Map-first trip planner · Next.js · React · Leaflet</p><p>Drag an entire multi-day journey across a live map — stops, budgets, and place discovery in one place, with real-time currency and a printable itinerary.</p><a class="read" href="#">Read the build →</a></div>
+    </article>
+
+    <article class="feature">
+      <div class="art-wrap"><span class="tape"></span><div class="pframe"><div class="pshot g-veles"></div></div></div>
+      <div class="fbody"><p class="flabel">Feature — a home for imaginary people</p><h3>Veles</h3><p class="byline">Worldbuilding studio · Svelte · Electron · Vite</p><p>A codex for the stories in your head — characters, lore, portraits and relationships, organised the way writers actually think instead of the way tools usually force.</p><a class="read" href="#">Read the build →</a></div>
+    </article>
+
+    <article class="feature flip">
+      <div class="art-wrap"><div class="pframe"><div class="pshot g-wod"></div></div></div>
+      <div class="fbody"><p class="flabel">Feature — the tabletop, shipped as software</p><h3>World of Darkness</h3><p class="byline">Foundry VTT system · Svelte · data-driven</p><p>A modern <em>Vampire: V6</em> system for the virtual tabletop, built on one engine designed to grow into the whole World of Darkness. My tabletop love, in production.</p><a class="read" href="#">Read the build →</a></div>
+    </article>
+  </div>
+</section>
+
+<!-- ================= COLOPHON ================= -->
+<footer class="colophon">
+  <div class="wrap">
+    <div>
+      <p class="big">Let's<br> Talk.</p>
+    </div>
+    <div class="links"><a href="#">Email</a><a href="#">GitHub</a><a href="#">LinkedIn</a></div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var body=document.body, btn=document.getElementById('ed');
+  function set(night){
+    body.classList.toggle('night', night);
+    document.title = night ? 'L.T. — Night Edition' : 'L.T. — Day Edition';
+    document.querySelectorAll('[data-ed]').forEach(function(el){
+      el.hidden = (el.getAttribute('data-ed')==='night') !== night;
+    });
+    btn.setAttribute('aria-pressed', night);
+  }
+  function toggle(){ set(!body.classList.contains('night')); }
+  btn.addEventListener('click', toggle);
+  var flip = document.getElementById('flip');
+  if(flip){ flip.addEventListener('click', toggle); }
+  window.addEventListener('scroll', function(){
+    btn.classList.toggle('show', window.scrollY > 380);
+  }, {passive:true});
+  set(false);
+})();
+</script>

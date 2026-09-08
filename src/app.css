@@ -1,0 +1,190 @@
+/* =====================================================================
+   L.T. — risograph zine design system.
+   Two editions as separate pages: .day (paper) and .night (black stock).
+   Tokens live on the .edition wrapper so each route paints its own world.
+   ===================================================================== */
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0; background:#100E15}
+
+.edition{
+  --display:"Archivo Black",system-ui,sans-serif;
+  --serif:"Fraunces",Georgia,serif;
+  --sans:"Hanken Grotesk",system-ui,sans-serif;
+  --mono:"Space Mono",ui-monospace,monospace;
+  min-height:100vh;
+  position:relative;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--sans);
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* DAY EDITION — warm manila stock, two spot inks */
+.day{
+  --paper:#F1E7D2; --ink:#18141C; --mut:#5B5560;
+  --pink:#FF3D8B; --blue:#1B2AD8; --yellow:#FFC22E;
+  --frame:#18141C; --offset:var(--blue); --blend:multiply; --grain-op:.07;
+}
+/* NIGHT EDITION — black photocopy stock, neon inks that glow */
+.night{
+  --paper:#100E15; --ink:#F2EBDC; --mut:#9A93A6;
+  --pink:#FF4FA3; --blue:#5470FF; --yellow:#FFE45E;
+  --frame:#F2EBDC; --offset:var(--pink); --blend:screen; --grain-op:.10;
+}
+
+a{color:inherit}
+.wrap{max-width:1120px; margin:0 auto; padding:0 30px}
+
+/* paper grain */
+.grain{position:absolute; inset:0; z-index:300; pointer-events:none; opacity:var(--grain-op); mix-blend-mode:var(--blend);
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* ---------- hero ---------- */
+.hero{position:relative; overflow:hidden}
+.hero .wrap{position:relative; z-index:2; padding:56px 30px 56px}
+.hero .blob{position:absolute; z-index:1; mix-blend-mode:var(--blend); border-radius:50%}
+.hero .b1{width:360px; height:360px; background:var(--pink); right:-70px; top:-90px}
+.hero .b2{width:250px; height:250px; background:var(--blue); right:200px; top:60px}
+.hero .halftone{position:absolute; z-index:1; right:7%; top:22%; width:min(36vw,300px); height:min(36vw,300px); color:var(--blue); mix-blend-mode:var(--blend);
+  background-image:radial-gradient(currentColor 2px, transparent 2.4px); background-size:12px 12px;
+  -webkit-mask-image:radial-gradient(circle,#000 60%,transparent 74%); mask-image:radial-gradient(circle,#000 60%,transparent 74%)}
+
+.hero-mast{display:flex; align-items:baseline; gap:16px; margin:0 0 34px}
+.hero-mast .lt{font-family:var(--display); font-size:26px; letter-spacing:-.02em; text-shadow:2px 2px 0 var(--offset)}
+.reading-flag{font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--mut)}
+
+.kick{font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--ink); margin:0 0 22px}
+.kick b{color:var(--pink)}
+.huge{font-family:var(--display); font-size:clamp(48px,10vw,116px); line-height:.86; letter-spacing:-.03em; text-transform:uppercase; margin:0; text-shadow:4px 4px 0 var(--offset)}
+.huge .pink{color:var(--pink); text-shadow:4px 4px 0 var(--ink)}
+.huge.day-title{font-size:clamp(38px,7vw,82px); line-height:.92; max-width:14ch}
+.huge.quote-title{font-size:clamp(30px,5.4vw,58px); line-height:1.02; max-width:16ch}
+.attrib{font-family:var(--mono); font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--mut); margin:16px 0 0}
+.lede{font-family:var(--serif); font-style:italic; font-size:clamp(18px,2.4vw,23px); max-width:52ch; margin:26px 0 0; color:var(--ink)}
+
+/* hero flip — the primary navigation between editions */
+.edition-cta{margin:34px 0 0}
+.edition-cta .cta-sub{font-family:var(--mono); font-size:12.5px; letter-spacing:.02em; color:var(--mut); margin:0 0 12px; text-transform:uppercase}
+.edition-cta .cta-sub b{color:var(--ink)}
+.flip-big{display:inline-block; font-family:var(--display); font-size:clamp(15px,2vw,19px); text-transform:uppercase; letter-spacing:-.01em;
+  color:var(--paper); background:var(--ink); border:3px solid var(--ink); padding:15px 22px; box-shadow:7px 7px 0 var(--pink);
+  cursor:pointer; text-decoration:none; transition:transform .12s, box-shadow .12s}
+.flip-big:hover{transform:translate(-2px,-2px); box-shadow:9px 9px 0 var(--pink)}
+.flip-big:active{transform:translate(2px,2px); box-shadow:3px 3px 0 var(--pink)}
+
+/* ---------- sections ---------- */
+.section{padding:56px 0}
+.stamp{display:inline-block; font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+  color:var(--paper); background:var(--ink); padding:6px 12px; transform:rotate(-1.4deg); margin:0 0 30px}
+
+/* DAY: the brick wall */
+.bricks{display:grid; grid-template-columns:repeat(6,1fr); gap:16px}
+.brick{grid-column:span 3; border:3px solid var(--ink); background:var(--paper); padding:24px 24px 26px; box-shadow:9px 9px 0 var(--blue); position:relative}
+.brick:nth-child(2n){box-shadow:9px 9px 0 var(--pink)}
+.brick.b-found{grid-column:span 6}
+.brick.b-third{grid-column:span 2}
+.brick.b-twothird{grid-column:span 4}
+.brick .lab{font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--pink)}
+.brick h3{font-family:var(--display); font-size:23px; text-transform:uppercase; letter-spacing:-.01em; line-height:1; margin:8px 0 12px}
+.brick.b-found h3{font-size:30px}
+.brick p{font-size:15px; color:var(--ink); margin:0; max-width:62ch}
+.brick .mut{color:var(--mut)}
+.brick ul{list-style:none; padding:0; margin:0; columns:2; column-gap:26px}
+.brick li{font-size:14.5px; padding:5px 0 5px 20px; position:relative; break-inside:avoid}
+.brick li::before{content:""; position:absolute; left:0; top:11px; width:9px; height:9px; background:var(--pink)}
+.brick li:nth-child(2n)::before{background:var(--blue)}
+.principles{display:flex; flex-wrap:wrap; gap:9px; margin:16px 0 0}
+.principles span{font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.04em; border:2px solid var(--ink); padding:4px 10px; background:var(--ink); color:var(--paper)}
+
+/* tag field */
+.field{display:flex; flex-wrap:wrap; gap:9px; margin:14px 0 0}
+.field span{font-family:var(--mono); font-size:12.5px; border:2px solid var(--ink); padding:5px 10px; background:var(--paper)}
+.field span:nth-child(3n){box-shadow:3px 3px 0 var(--pink)}
+.field span:nth-child(3n+1){box-shadow:3px 3px 0 var(--blue)}
+.field.learn span{border-style:dashed; box-shadow:none; border-color:var(--pink)}
+
+/* NIGHT: project feature spreads */
+.feature{display:grid; grid-template-columns:1fr 1fr; gap:36px; align-items:center; padding:44px 0; border-bottom:2px dashed var(--mut); text-decoration:none}
+.feature:last-child{border-bottom:none}
+.feature.flip .art-wrap{order:2}
+.art-wrap{position:relative}
+.pframe{border:5px solid var(--frame); box-shadow:14px 14px 0 var(--offset); position:relative; transition:transform .14s, box-shadow .14s}
+.feature:hover .pframe{transform:translate(-3px,-3px); box-shadow:18px 18px 0 var(--offset)}
+.pshot{aspect-ratio:16/10}
+.tape{position:absolute; top:-14px; left:24px; width:78px; height:26px; background:var(--yellow); opacity:.85; transform:rotate(-5deg); mix-blend-mode:var(--blend)}
+.fbody .flabel{font-family:var(--mono); font-size:12px; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--pink)}
+.fbody h3{font-family:var(--display); font-size:clamp(34px,5vw,52px); text-transform:uppercase; letter-spacing:-.02em; line-height:.9; margin:8px 0 6px; text-shadow:3px 3px 0 var(--offset)}
+.fbody .byline{font-family:var(--mono); font-size:12px; color:var(--mut); margin:0 0 14px}
+.fbody p{font-size:15.5px; color:var(--ink); max-width:44ch; margin:0 0 18px}
+.fbody .read{font-family:var(--mono); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; border-bottom:3px solid var(--pink); padding-bottom:2px; color:var(--ink)}
+
+/* project gradient stand-ins (until real screenshots) */
+.g-wander{background:linear-gradient(120deg,#2FB6A8,#1F6F7A 72%)}
+.g-tess{background:conic-gradient(from 210deg at 42% 40%,#E8A13A,#D6467F,#7C5CFF,#2FB6A8,#E8A13A)}
+.g-veles{background:linear-gradient(120deg,#7C5CFF,#2c2058 78%)}
+.g-wod{background:linear-gradient(120deg,#D6467F,#38101f 80%)}
+
+/* ---------- project detail page ---------- */
+.proj{padding:44px 0 10px}
+.backlink{font-family:var(--mono); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--mut); text-decoration:none; display:inline-block; margin:0 0 26px}
+.backlink:hover{color:var(--pink)}
+.proj h1{font-family:var(--display); font-size:clamp(40px,8vw,84px); text-transform:uppercase; letter-spacing:-.03em; line-height:.9; margin:0; text-shadow:4px 4px 0 var(--offset)}
+.proj .ptag{font-family:var(--serif); font-style:italic; font-size:22px; margin:16px 0 0; color:var(--ink)}
+.proj .cover{margin:34px 0; border:5px solid var(--frame); box-shadow:16px 16px 0 var(--offset)}
+.proj .cover .pshot{aspect-ratio:16/8}
+.proj .cover img{display:block; width:100%; aspect-ratio:16/8; object-fit:cover; object-position:top}
+
+/* subtle screenshot gallery — one stage + quiet thumbnail strip */
+.pgallery{margin:34px 0 48px}
+.pgallery .stage{border:5px solid var(--frame); box-shadow:16px 16px 0 var(--offset); background:var(--paper)}
+.pgallery .stage img{display:block; width:100%; aspect-ratio:16 / 8.3; object-fit:cover; object-position:top center}
+.pgallery .cap{font-family:var(--mono); font-size:12px; color:var(--mut); margin:16px 2px 0; line-height:1.5; min-height:2.6em}
+.pgallery .thumbs{display:flex; flex-wrap:wrap; gap:12px; margin:12px 0 0}
+.pgallery .thumbs button{width:92px; aspect-ratio:16 / 10; padding:0; overflow:hidden; cursor:pointer; background:none; border:2px solid var(--ink); opacity:.5; transition:opacity .15s, box-shadow .12s, transform .12s}
+.pgallery .thumbs button img{width:100%; height:100%; object-fit:cover; object-position:top center; display:block}
+.pgallery .thumbs button:hover{opacity:.85}
+.pgallery .thumbs button[aria-current="true"]{opacity:1; box-shadow:4px 4px 0 var(--pink); transform:translate(-1px,-1px)}
+.pgallery .thumbs button:focus-visible{outline:2px solid var(--pink); outline-offset:2px}
+@media (max-width:820px){ .pgallery .thumbs button{width:72px} }
+.proj-grid{display:grid; grid-template-columns:1.6fr 1fr; gap:40px; padding-bottom:60px}
+.proj-body p{font-size:16px; line-height:1.65; margin:0 0 16px; max-width:60ch}
+.proj-side .sh{font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--pink); margin:0 0 10px; border-bottom:2px solid var(--ink); padding-bottom:6px}
+.proj-side .block{margin:0 0 28px}
+.proj-side .links a{display:block; font-family:var(--mono); font-size:13px; text-transform:uppercase; letter-spacing:.04em; padding:8px 0; border-bottom:1px dashed var(--mut); text-decoration:none}
+.proj-side .links a:hover{color:var(--pink)}
+
+/* ---------- floating flip (persistent cross-edition link) ---------- */
+.flip-float{position:fixed; right:20px; bottom:20px; z-index:150; display:inline-flex; align-items:center; gap:9px;
+  background:var(--paper); border:2px solid var(--ink); border-radius:2px; padding:8px 12px; box-shadow:5px 5px 0 var(--ink);
+  font-family:var(--mono); font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--ink); text-decoration:none;
+  transition:transform .12s, box-shadow .12s}
+.flip-float:hover{transform:translate(-2px,-2px); box-shadow:7px 7px 0 var(--pink)}
+.flip-float .knob{width:12px; height:12px; background:var(--pink)}
+
+/* ---------- colophon ---------- */
+.colophon{padding:44px 0 90px}
+.colophon .wrap{display:flex; justify-content:space-between; align-items:flex-end; gap:26px; flex-wrap:wrap}
+.colophon .big{font-family:var(--display); font-size:clamp(30px,5vw,52px); text-transform:uppercase; line-height:.9; letter-spacing:-.02em; text-shadow:3px 3px 0 var(--offset); margin:0}
+.colophon .links{display:flex; gap:16px; font-family:var(--mono); font-size:13px; text-transform:uppercase; letter-spacing:.06em}
+.colophon .links a{text-decoration:none; border-bottom:3px solid var(--pink); padding-bottom:2px}
+.colophon .fine{font-family:var(--mono); font-size:11px; color:var(--mut); margin:14px 0 0; max-width:44ch}
+
+/* ---------- night → day dawn transition ---------- */
+.dawn{min-height:20vh; background:linear-gradient(180deg, #100E15 0%, #221a2a 42%, #6a5560 68%, #c4ad98 86%, #F1E7D2 100%)}
+.scroll-hint{font-family:var(--mono); font-size:12px; letter-spacing:.16em; text-transform:uppercase; color:var(--mut); margin:34px 0 0}
+
+@media (max-width:820px){
+  .bricks{grid-template-columns:1fr}
+  .brick,.brick.b-found,.brick.b-third,.brick.b-twothird{grid-column:span 1}
+  .brick ul{columns:1}
+  .feature{grid-template-columns:1fr; gap:22px}
+  .feature.flip .art-wrap{order:0}
+  .proj-grid{grid-template-columns:1fr; gap:26px}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .flip-big, .flip-float, .pframe, .feature:hover .pframe{transition:none}
+}
